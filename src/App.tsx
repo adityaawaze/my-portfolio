@@ -9,6 +9,7 @@ import { SkillsSection } from '@/sections/SkillsSection';
 import { ResearchSection } from '@/sections/ResearchSection';
 import { EducationSection } from '@/sections/EducationSection';
 import { ContactSection } from '@/sections/ContactSection';
+import { Toaster } from '@/components/ui/sonner';
 
 function App() {
   useLenis();
@@ -27,6 +28,7 @@ function App() {
         <ContactSection />
       </main>
       <Footer />
+      <Toaster />
     </div>
   );
 }

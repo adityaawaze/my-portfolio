@@ -1,17 +1,20 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SectionLabel } from '@/components/SectionLabel';
 import { ScrollReveal } from '@/components/ScrollReveal';
-import { IconButton } from '@/components/IconButton';
-import { Linkedin, Mail } from 'lucide-react';
+import { Mail } from 'lucide-react';
+import emailjs from '@emailjs/browser';
+import { toast } from 'sonner';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function ContactSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const [sending, setSending] = useState(false);
 
   useGSAP(() => {
     if (!sectionRef.current || !contentRef.current) return;
@@ -32,6 +35,28 @@ export function ContactSection() {
     );
   }, { scope: sectionRef });
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formRef.current) return;
+    setSending(true);
+
+    // Read EmailJS config from Vite env variables. Add these to your .env as VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_r4ogcpz';
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_pmrf3t6';
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'MQKXJ-hH1OYvB73Go';
+
+    try {
+      await emailjs.sendForm(serviceId, templateId, formRef.current, publicKey);
+      toast.success('Message sent — thank you!');
+      formRef.current.reset();
+    } catch (err) {
+      console.error('EmailJS error', err);
+      toast.error('Failed to send message. Please try again later.');
+    } finally {
+      setSending(false);
+    }
+  };
+
   return (
     <section
       id="contact"
@@ -50,19 +75,13 @@ export function ContactSection() {
 
           <ScrollReveal delay={0.2}>
             <p className="body-l text-portfolio-gray-text mt-6 max-w-[560px] mx-auto">
-              I&apos;m always open to discussing new opportunities, interesting projects, or just 
+              I&apos;m always open to discussing new opportunities, interesting projects, or just
               having a conversation about technology and product development.
             </p>
           </ScrollReveal>
 
           <ScrollReveal delay={0.3}>
-            <div className="flex justify-center gap-4 mt-8">
-              <IconButton
-                icon={Linkedin}
-                href="https://www.linkedin.com/in/aditya-awaze-tech-operations"
-                label="LinkedIn"
-              />
-            </div>
+            <div className="mt-8" />
           </ScrollReveal>
 
           <ScrollReveal delay={0.4}>
@@ -70,18 +89,55 @@ export function ContactSection() {
           </ScrollReveal>
 
           <ScrollReveal delay={0.5}>
-            <a
-              href="mailto:adityaawaze12@gmail.com"
-              className="mt-8 bg-portfolio-gray-dark border border-portfolio-gray-border rounded-2xl p-6 flex items-center gap-4 text-left transition-all duration-300 hover:border-portfolio-green hover:bg-portfolio-green/5 max-w-[500px] mx-auto group"
+            <form
+              ref={formRef}
+              onSubmit={handleSubmit}
+              className="mt-8 bg-portfolio-gray-dark border border-portfolio-gray-border rounded-2xl p-6 flex flex-col gap-4 text-left transition-all duration-300 hover:border-portfolio-green max-w-[600px] mx-auto"
             >
-              <Mail className="w-6 h-6 text-portfolio-green flex-shrink-0" strokeWidth={1.5} />
-              <div>
-                <p className="heading-s text-portfolio-white group-hover:text-portfolio-green transition-colors">
-                  adityaawaze12@gmail.com
-                </p>
-                <p className="body-s text-portfolio-gray-text mt-0.5">Send me an email</p>
+              <div className="flex items-center gap-4">
+                <Mail className="w-6 h-6 text-portfolio-green flex-shrink-0" strokeWidth={1.5} />
+                <div>
+                  <p className="heading-s text-portfolio-white">
+                    Send me a message
+                  </p>
+                  <p className="body-s text-portfolio-gray-text mt-0.5">I will get back to you soon.</p>
+                </div>
               </div>
-            </a>
+
+              <input
+                type="text"
+                name="from_name"
+                placeholder="Your name"
+                required
+                className="input bg-transparent border border-portfolio-gray-border rounded-lg p-3 text-portfolio-white"
+              />
+
+              <input
+                type="email"
+                name="reply_to"
+                placeholder="Your email"
+                required
+                className="input bg-transparent border border-portfolio-gray-border rounded-lg p-3 text-portfolio-white"
+              />
+
+              <textarea
+                name="message"
+                placeholder="Your message"
+                rows={5}
+                required
+                className="bg-transparent border border-portfolio-gray-border rounded-lg p-3 text-portfolio-white resize-none"
+              />
+
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  disabled={sending}
+                  className="px-5 py-2 bg-portfolio-green text-portfolio-black rounded-lg disabled:opacity-50"
+                >
+                  {sending ? 'Sending...' : 'Send Message'}
+                </button>
+              </div>
+            </form>
           </ScrollReveal>
         </div>
       </div>

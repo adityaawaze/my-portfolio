@@ -1,4 +1,4 @@
-import { Linkedin, Mail } from 'lucide-react';
+import { Linkedin, Github, Mail } from 'lucide-react';
 import { IconButton } from './IconButton';
 
 const quickLinks = [
@@ -56,6 +56,12 @@ export function Footer() {
             <h4 className="label-style text-portfolio-gray-text mb-4">CONNECT</h4>
             <div className="flex gap-3">
               <IconButton 
+                icon={Github} 
+                href="https://github.com/adityaawaze" 
+                label="GitHub"
+                size="sm"
+              />
+              <IconButton 
                 icon={Linkedin} 
                 href="https://www.linkedin.com/in/aditya-awaze-tech-operations" 
                 label="LinkedIn"
@@ -68,7 +74,7 @@ export function Footer() {
                 size="sm"
               />
             </div>
-            <a 
+            <a
               href="mailto:adityaawaze12@gmail.com"
               className="body-s text-portfolio-green hover:underline mt-4 inline-block transition-colors"
             >
@@ -88,7 +94,7 @@ export function Footer() {
           }}
         >
           <p className="body-s text-portfolio-gray-text">
-            &copy; 2026 Aditya Awaze. All rights reserved.
+            Aditya Awaze — Software Engineer • Open to collaboration
           </p>
           <p className="body-s text-portfolio-gray-text">
             Built with passion

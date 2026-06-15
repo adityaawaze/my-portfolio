@@ -12,17 +12,7 @@ const educationData = [
   {
     degree: 'Bachelor of Technology (Information Technology)',
     institution: 'Priyadarshini Bhagwati College of Engineering, Nagpur',
-    period: '2022 \u2013 Present',
-  },
-  {
-    degree: 'Higher Secondary Certificate (HSC)',
-    institution: 'Nirala Junior College',
-    period: '73%',
-  },
-  {
-    degree: 'Secondary School Certificate (SSC)',
-    institution: 'Rashtriya Public School, Mandhal',
-    period: '86%',
+    period: 'Nov 2022 – Jun 2026 — First Division',
   },
 ];
 
@@ -38,7 +28,7 @@ const certAreas = [
 export function EducationSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const lineRef = useRef<HTMLDivElement>(null);
+  
 
   useGSAP(() => {
     if (!sectionRef.current || !contentRef.current) return;
@@ -58,23 +48,7 @@ export function EducationSection() {
       }
     );
 
-    // Timeline line draw
-    if (lineRef.current) {
-      gsap.fromTo(
-        lineRef.current,
-        { scaleY: 0 },
-        {
-          scaleY: 1,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: lineRef.current.parentElement,
-            start: 'top 70%',
-            end: 'bottom 70%',
-            scrub: true,
-          },
-        }
-      );
-    }
+    // no vertical timeline — centered layout
   }, { scope: sectionRef });
 
   return (
@@ -98,6 +72,15 @@ export function EducationSection() {
                 Google Cybersecurity Professional Certificate
               </h3>
 
+              <a
+                href="https://www.coursera.org/account/accomplishments/specialization/certificate/YRKHVF5ZZXNX"
+                target="_blank"
+                rel="noreferrer"
+                className="body-s text-portfolio-green inline-block mt-3 hover:underline"
+              >
+                View Coursera Specialization Certificate
+              </a>
+
               <ul className="mt-6 space-y-3">
                 {certAreas.map((area, i) => (
                   <li key={i} className="body-s text-portfolio-gray-text flex items-start gap-2">
@@ -112,31 +95,22 @@ export function EducationSection() {
           {/* Education Timeline */}
           <div>
             <ScrollReveal>
-              <SectionLabel text="EDUCATION" className="mb-6" />
-            </ScrollReveal>
+                <SectionLabel text="EDUCATION" className="mb-6 justify-center" />
+              </ScrollReveal>
 
-            <div className="relative">
-              {/* Timeline line */}
-              <div
-                ref={lineRef}
-                className="absolute left-6 top-0 bottom-0 w-0.5 origin-top bg-portfolio-gray-border"
-              />
-
-              <div className="space-y-8">
-                {educationData.map((edu, index) => (
-                  <ScrollReveal key={index} delay={index * 0.15}>
-                    <div className="relative pl-16">
-                      {/* Connector dot */}
-                      <div className="absolute left-[19px] top-2 w-3 h-3 rounded-full bg-portfolio-green" />
-
-                      <h3 className="heading-m text-portfolio-white">{edu.degree}</h3>
-                      <p className="body-m text-portfolio-gray-text mt-1">{edu.institution}</p>
-                      <p className="body-s text-portfolio-green mt-1">{edu.period}</p>
-                    </div>
-                  </ScrollReveal>
-                ))}
+              <div className="flex flex-col items-center justify-center">
+                <div className="space-y-6 text-center max-w-[720px] mx-auto">
+                  {educationData.map((edu, index) => (
+                    <ScrollReveal key={index} delay={index * 0.15}>
+                      <div>
+                        <h3 className="heading-m text-portfolio-white">{edu.degree}</h3>
+                        <p className="body-m text-portfolio-gray-text mt-2">{edu.institution}</p>
+                        <p className="body-s text-portfolio-green mt-2">{edu.period}</p>
+                      </div>
+                    </ScrollReveal>
+                  ))}
+                </div>
               </div>
-            </div>
           </div>
         </div>
       </div>

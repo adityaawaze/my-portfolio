@@ -26,7 +26,8 @@ const publications = [
   },
   {
     title: 'Connect2NGO',
-    publishedIn: 'IJRASET',
+    publishedIn: 'International Journal of Engineering Research & Technology (IJRASET)',
+    authors: 'Kajal Jain, Aditya Awaze',
     summary:
       'A digital platform designed to improve transparency, collaboration, and efficiency within the NGO ecosystem.',
     features: [
