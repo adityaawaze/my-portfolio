@@ -12,7 +12,7 @@ const publications = [
   {
     title: 'Online Test Portal',
     publishedIn: 'International Journal of Research and Analytical Reviews (IJRAR)',
-    authors: 'Manoj Chaudhari, Kajal Jain, Aditya Awaze',
+   
     summary:
       'A web-based examination platform designed to simplify digital assessments through automation and role-based access management.',
     features: [
@@ -27,7 +27,7 @@ const publications = [
   {
     title: 'Connect2NGO',
     publishedIn: 'International Journal of Engineering Research & Technology (IJRASET)',
-    authors: 'Kajal Jain, Aditya Awaze',
+  
     summary:
       'A digital platform designed to improve transparency, collaboration, and efficiency within the NGO ecosystem.',
     features: [

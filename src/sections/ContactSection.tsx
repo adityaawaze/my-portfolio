@@ -38,6 +38,17 @@ export function ContactSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formRef.current) return;
+
+    const data = new FormData(formRef.current);
+    const name = (data.get('from_name') as string)?.trim();
+    const email = (data.get('from_email') as string)?.trim();
+    const message = (data.get('message') as string)?.trim();
+
+    if (!name) { toast.error('Please enter your name.'); return; }
+    if (!email) { toast.error('Please enter your email.'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { toast.error('Please enter a valid email address.'); return; }
+    if (!message) { toast.error('Please enter a message.'); return; }
+
     setSending(true);
 
     // Read EmailJS config from Vite env variables. Add these to your .env as VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY
@@ -114,7 +125,7 @@ export function ContactSection() {
 
               <input
                 type="email"
-                name="reply_to"
+                name="from_email"
                 placeholder="Your email"
                 required
                 className="input bg-transparent border border-portfolio-gray-border rounded-lg p-3 text-portfolio-white"

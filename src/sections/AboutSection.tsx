@@ -57,7 +57,7 @@ export function AboutSection() {
                 style={{ transform: 'rotate(-3deg)' }}
               />
               <img
-                src="/images/hero-profile.jpg"
+                src={`${import.meta.env.BASE_URL}images/hero-profile.jpg`}
                 alt="Aditya Awaze"
                 className="w-full aspect-[3/4] object-cover rounded-2xl"
                 style={{ mixBlendMode: 'normal' }}

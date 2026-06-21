@@ -105,7 +105,8 @@ export function Navigation() {
 
         {/* CTA Button */}
         <a
-          href="mailto:adityaawaze12@gmail.com"
+          href="#contact"
+          onClick={(e) => { e.preventDefault(); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); }}
           className="hidden md:block label-style px-6 py-2.5 rounded-button bg-portfolio-green text-portfolio-black hover:bg-[#5ac55c] hover:scale-[1.02] transition-all duration-200"
         >
           Hire Me
@@ -134,7 +135,8 @@ export function Navigation() {
             </button>
           ))}
           <a
-            href="mailto:adityaawaze12@gmail.com"
+            href="#contact"
+            onClick={(e) => { e.preventDefault(); setMobileOpen(false); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); }}
             className="label-style px-8 py-3 rounded-button bg-portfolio-green text-portfolio-black mt-4"
           >
             Hire Me

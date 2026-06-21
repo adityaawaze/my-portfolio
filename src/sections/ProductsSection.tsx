@@ -23,7 +23,7 @@ const products = [
     contributions:
       'Transaction workflows, Admin dashboard, Cashback engine, API integrations, Performance optimization',
     techStack: ['Node.js', 'Express.js', 'MySQL', 'REST APIs', 'VPS'],
-    image: '/images/rskpay-product.jpg',
+    image: `${import.meta.env.BASE_URL}images/rskpay-product.jpg`,
     link: 'https://www.rskpay.in',
   },
   {
@@ -40,7 +40,7 @@ const products = [
     contributions:
       'Module development, Frontend implementation, Backend services, Database management, Feature enhancements',
     techStack: ['Node.js', 'Express.js', 'MySQL', 'REST APIs'],
-    image: '/images/onmarq-product.jpg',
+    image: `${import.meta.env.BASE_URL}images/onmarq-product.jpg`,
     link: 'https://www.onmarq360.com',
   },
   {
@@ -57,7 +57,7 @@ const products = [
     contributions:
       'Product architecture, Marketplace workflows, Dashboard development, Backend APIs, Database design',
     techStack: ['Node.js', 'Express.js', 'MySQL', 'REST APIs'],
-    image: '/images/pairpinnacle-product.jpg',
+    image: `${import.meta.env.BASE_URL}images/pairpinnacle-product.jpg`,
     link: 'https://www.pairpinnacle.com',
   },
 ];
