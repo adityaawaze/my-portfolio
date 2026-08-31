@@ -1,3 +1,4 @@
+import { Check, ExternalLink } from 'lucide-react';
 import { ScrollReveal } from './ScrollReveal';
 
 interface PublicationCardProps {
@@ -21,8 +22,7 @@ export function PublicationCard({
 }: PublicationCardProps) {
   return (
     <ScrollReveal delay={delay}>
-      <div className="bg-portfolio-gray-dark border border-portfolio-gray-border rounded-2xl p-8 relative overflow-hidden transition-all duration-300 hover:border-portfolio-brown-light">
-        {/* Top accent line */}
+      <div className="portfolio-card rounded-2xl p-8 relative overflow-hidden hover:-translate-y-1 hover:border-portfolio-brown-light group">
         <div className="absolute top-0 left-8 w-[60px] h-0.5 bg-portfolio-green" />
 
         <span className="label-style px-3 py-1 rounded-full bg-portfolio-green/15 text-portfolio-green inline-block">
@@ -31,7 +31,7 @@ export function PublicationCard({
 
         <h3 className="heading-m text-portfolio-white mt-4">{title}</h3>
         <p className="body-s text-portfolio-gray-text mt-2">{publishedIn}</p>
-        
+
         {authors && (
           <p className="body-s text-portfolio-white mt-1">{authors}</p>
         )}
@@ -43,7 +43,7 @@ export function PublicationCard({
         <ul className="mt-4 space-y-1.5">
           {features.map((feature, i) => (
             <li key={i} className="body-s text-portfolio-gray-text flex items-start gap-2">
-              <span className="text-portfolio-green mt-0.5">&#8226;</span>
+              <Check className="w-3.5 h-3.5 text-portfolio-green mt-0.5 flex-shrink-0" strokeWidth={2.5} />
               {feature}
             </li>
           ))}
@@ -53,9 +53,10 @@ export function PublicationCard({
           href={link}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block mt-5 text-portfolio-green body-s font-medium hover:underline transition-all"
+          className="inline-flex items-center gap-1.5 mt-5 text-portfolio-green body-s font-medium hover:underline transition-all group/link"
         >
-          View Paper &rarr;
+          View Paper
+          <ExternalLink className="w-3.5 h-3.5 transition-transform group-hover/link:translate-x-0.5" strokeWidth={2} />
         </a>
       </div>
     </ScrollReveal>

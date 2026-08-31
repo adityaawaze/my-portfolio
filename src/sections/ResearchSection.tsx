@@ -1,18 +1,12 @@
-import { useRef } from 'react';
-import { useGSAP } from '@gsap/react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { SectionLabel } from '@/components/SectionLabel';
+import { SectionHeader } from '@/components/SectionHeader';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { PublicationCard } from '@/components/PublicationCard';
-
-gsap.registerPlugin(ScrollTrigger);
+import { sectionIcons } from '@/lib/icons';
 
 const publications = [
   {
     title: 'Online Test Portal',
     publishedIn: 'International Journal of Research and Analytical Reviews (IJRAR)',
-   
     summary:
       'A web-based examination platform designed to simplify digital assessments through automation and role-based access management.',
     features: [
@@ -27,7 +21,6 @@ const publications = [
   {
     title: 'Connect2NGO',
     publishedIn: 'International Journal of Engineering Research & Technology (IJRASET)',
-  
     summary:
       'A digital platform designed to improve transparency, collaboration, and efficiency within the NGO ecosystem.',
     features: [
@@ -42,50 +35,24 @@ const publications = [
 ];
 
 export function ResearchSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(() => {
-    if (!sectionRef.current || !contentRef.current) return;
-
-    gsap.fromTo(
-      contentRef.current,
-      { x: '-15vw' },
-      {
-        x: 0,
-        ease: 'power2.inOut',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top bottom',
-          end: 'top top',
-          scrub: true,
-        },
-      }
-    );
-  }, { scope: sectionRef });
-
   return (
-    <section
-      id="research"
-      ref={sectionRef}
-      className="relative w-full bg-portfolio-black overflow-hidden"
-    >
-      <div ref={contentRef} className="section-padding">
-        <div className="content-max-width">
-          <div className="text-center mb-12">
-            <ScrollReveal>
-              <SectionLabel text="RESEARCH" className="justify-center" />
-            </ScrollReveal>
-            <ScrollReveal delay={0.1}>
-              <h2 className="heading-l text-portfolio-white mt-4">Publications</h2>
-            </ScrollReveal>
-          </div>
+    <section id="research" className="relative section-padding">
+      <div className="content-max-width">
+        <ScrollReveal>
+          <SectionHeader
+            number="05"
+            label="Research"
+            title="Publications"
+            subtitle="Published research on digital platforms and assessment systems."
+            icon={sectionIcons.research}
+            align="center"
+          />
+        </ScrollReveal>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {publications.map((pub, i) => (
-              <PublicationCard key={pub.title} {...pub} delay={i * 0.15} />
-            ))}
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {publications.map((pub, i) => (
+            <PublicationCard key={pub.title} {...pub} delay={i * 0.15} />
+          ))}
         </div>
       </div>
     </section>

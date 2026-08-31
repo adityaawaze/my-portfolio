@@ -1,18 +1,13 @@
-import { useRef } from 'react';
-import { useGSAP } from '@gsap/react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { SectionLabel } from '@/components/SectionLabel';
+import { SectionHeader } from '@/components/SectionHeader';
 import { ScrollReveal } from '@/components/ScrollReveal';
-import { Timeline } from '@/components/Timeline';
-
-gsap.registerPlugin(ScrollTrigger);
+import { JourneyTimeline } from '@/components/JourneyTimeline';
+import { sectionIcons } from '@/lib/icons';
 
 const experienceData = [
   {
     title: 'RSK Online Services Pvt. Ltd.',
     subtitle: 'Senior Software Engineer',
-    period: 'May 2026 \u2013 Present',
+    period: 'May 2026 – Present',
     items: [
       'Building and maintaining production-grade software systems',
       'Developing scalable backend architectures',
@@ -25,7 +20,7 @@ const experienceData = [
   {
     title: 'RSK Online Services Pvt. Ltd.',
     subtitle: 'Software Developer Intern',
-    period: 'May 2025 \u2013 May 2026',
+    period: 'May 2025 – May 2026',
     items: [
       'Full-stack development across multiple live products',
       'Frontend implementation using modern JavaScript frameworks',
@@ -42,7 +37,7 @@ const experienceData = [
   {
     title: 'PugArch Technology Pvt. Ltd.',
     subtitle: 'Junior Software Developer Intern',
-    period: 'June 2024 \u2013 November 2024',
+    period: 'June 2024 – November 2024',
     items: [
       'Website development using WordPress',
       'Frontend development and UI/UX implementation',
@@ -54,7 +49,7 @@ const experienceData = [
   {
     title: 'Commenzy Community',
     subtitle: 'Head of Web Development & Video Editing',
-    period: 'April 2024 \u2013 December 2024',
+    period: 'April 2024 – December 2024',
     items: [
       'Managed web development activities',
       'Guided community members on technical projects',
@@ -65,49 +60,20 @@ const experienceData = [
 ];
 
 export function ExperienceSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(() => {
-    if (!sectionRef.current || !contentRef.current) return;
-
-    gsap.fromTo(
-      contentRef.current,
-      { x: '-15vw' },
-      {
-        x: 0,
-        ease: 'power2.inOut',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top bottom',
-          end: 'top top',
-          scrub: true,
-        },
-      }
-    );
-  }, { scope: sectionRef });
-
   return (
-    <section
-      id="experience"
-      ref={sectionRef}
-      className="relative w-full bg-portfolio-gray-mid overflow-hidden"
-    >
-      <div ref={contentRef} className="section-padding">
-        <div className="content-max-width">
-          <div className="text-center mb-12">
-            <ScrollReveal>
-              <SectionLabel text="EXPERIENCE" className="justify-center" />
-            </ScrollReveal>
-            <ScrollReveal delay={0.1}>
-              <h2 className="display-l text-portfolio-white mt-4">My Journey</h2>
-            </ScrollReveal>
-          </div>
+    <section id="experience" className="relative section-padding bg-portfolio-gray-mid/40">
+      <div className="content-max-width">
+        <ScrollReveal>
+          <SectionHeader
+            number="02"
+            label="Experience"
+            title="Professional Journey"
+            subtitle="From internships to senior engineering — building real products at scale."
+            icon={sectionIcons.experience}
+          />
+        </ScrollReveal>
 
-          <div className="max-w-[900px] mx-auto">
-            <Timeline items={experienceData} />
-          </div>
-        </div>
+        <JourneyTimeline items={experienceData} />
       </div>
     </section>
   );

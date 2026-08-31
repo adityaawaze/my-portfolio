@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ArrowUpRight, Check } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,7 +14,15 @@ interface ProductCardProps {
   techStack: string[];
   image: string;
   link: string;
+  index: number;
+  category?: string;
   delay?: number;
+  /** Tailwind aspect ratio class, e.g. aspect-[2/1] */
+  imageAspect?: string;
+  /** Background behind contained image */
+  imageBg?: string;
+  /** Extra padding inside image frame (for logos) */
+  imagePadding?: string;
 }
 
 export function ProductCard({
@@ -24,92 +33,132 @@ export function ProductCard({
   techStack,
   image,
   link,
+  index,
+  category,
   delay = 0,
+  imageAspect = 'aspect-[2/1]',
+  imageBg = 'bg-portfolio-surface-elevated',
+  imagePadding = 'p-0',
 }: ProductCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
+  const rowRef = useRef<HTMLDivElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const reversed = index % 2 === 1;
+  const num = String(index + 1).padStart(2, '0');
 
   useGSAP(() => {
-    if (!cardRef.current) return;
+    if (!rowRef.current) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
 
-    // Card entrance
-    gsap.fromTo(
-      cardRef.current,
-      { opacity: 0, y: 40 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        delay,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: cardRef.current,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
-      }
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: rowRef.current,
+        start: 'top 85%',
+        toggleActions: 'play none none none',
+      },
+      delay,
+    });
+
+    tl.from(rowRef.current.querySelector('.product-image-frame'), {
+      opacity: 0,
+      x: reversed ? 40 : -40,
+      duration: 0.8,
+      ease: 'power3.out',
+    }).from(
+      rowRef.current.querySelector('.product-content'),
+      { opacity: 0, x: reversed ? -30 : 30, duration: 0.8, ease: 'power3.out' },
+      '-=0.55'
     );
-
-    // Image parallax
-    if (imageRef.current) {
-      gsap.fromTo(
-        imageRef.current,
-        { y: '-5%' },
-        {
-          y: '5%',
-          ease: 'none',
-          scrollTrigger: {
-            trigger: cardRef.current,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true,
-          },
-        }
-      );
-    }
-  }, { scope: cardRef });
+  }, { scope: rowRef });
 
   return (
-    <div
-      ref={cardRef}
-      className="bg-portfolio-gray-dark border border-portfolio-gray-border rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:border-portfolio-brown-light hover:shadow-card-hover group"
+    <article
+      ref={rowRef}
+      className={`product-showcase grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-center ${
+        reversed ? 'lg:[&_.product-image-wrap]:order-2 lg:[&_.product-content]:order-1' : ''
+      }`}
     >
-      {/* Image */}
-      <div className="relative aspect-video overflow-hidden">
-        <div ref={imageRef} className="absolute inset-[-10%] w-[120%] h-[120%]">
-          <img
-            src={image}
-            alt={name}
-            className="w-full h-full object-cover"
-          />
+      <div className="product-image-wrap relative group">
+        <div className="absolute -top-3 left-0 font-display text-[5rem] font-bold leading-none text-portfolio-foreground/[0.04] select-none pointer-events-none z-10">
+          {num}
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-portfolio-gray-dark via-transparent to-transparent opacity-70" />
+
+        <div
+          className={`product-image-frame relative overflow-hidden rounded-sm border border-portfolio-gray-border ${imageAspect} ${imageBg} flex items-center justify-center`}
+        >
+          <img
+            ref={imgRef}
+            src={image}
+            alt={`${name} product preview`}
+            loading="lazy"
+            decoding="async"
+            width={832}
+            height={406}
+            className={`w-full h-full object-contain ${imagePadding} transition-transform duration-500 group-hover:scale-[1.02]`}
+            onError={(e) => {
+              const target = e.currentTarget;
+              target.style.display = 'none';
+              const fallback = target.nextElementSibling;
+              if (fallback instanceof HTMLElement) fallback.style.display = 'flex';
+            }}
+          />
+          <div
+            className="hidden absolute inset-0 items-center justify-center body-s text-portfolio-gray-text bg-portfolio-surface-muted"
+            aria-hidden
+          >
+            Preview unavailable
+          </div>
+
+          {category && (
+            <span className="absolute top-4 left-4 label-style px-3 py-1.5 bg-portfolio-black/70 backdrop-blur-sm text-white border border-white/10 z-10">
+              {category}
+            </span>
+          )}
+        </div>
+
+        <div
+          className={`absolute -bottom-2 h-[2px] w-2/3 bg-portfolio-green ${reversed ? 'right-0' : 'left-0'}`}
+        />
       </div>
 
-      {/* Content */}
-      <div className="p-6">
-        <h3 className="heading-m text-portfolio-white">{name}</h3>
-        <p className="body-m text-portfolio-gray-text mt-2">{description}</p>
+      <div className="product-content flex flex-col gap-5">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <span className="label-style text-portfolio-green">{num} — Live Product</span>
+            <h3 className="heading-l text-portfolio-white font-display mt-2">{name}</h3>
+          </div>
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-shrink-0 w-11 h-11 rounded-full border border-portfolio-gray-border flex items-center justify-center text-portfolio-foreground hover:border-portfolio-green hover:bg-portfolio-accent-subtle transition-all group/link"
+            aria-label={`Visit ${name}`}
+          >
+            <ArrowUpRight className="w-4 h-4 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+          </a>
+        </div>
 
-        <ul className="mt-4 space-y-1.5">
+        <p className="body-l text-portfolio-gray-text leading-relaxed">{description}</p>
+
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
           {features.map((feature, i) => (
             <li key={i} className="body-s text-portfolio-gray-text flex items-start gap-2">
-              <span className="text-portfolio-green mt-0.5">&#8226;</span>
+              <Check className="w-3.5 h-3.5 text-portfolio-green mt-0.5 flex-shrink-0" strokeWidth={2.5} />
               {feature}
             </li>
           ))}
         </ul>
 
-        <div className="mt-4">
-          <span className="label-style text-portfolio-green">MY CONTRIBUTIONS</span>
-          <p className="body-s text-portfolio-white mt-1">{contributions}</p>
+        <div className="border-l-2 border-portfolio-green pl-4 py-1">
+          <span className="label-style text-portfolio-green">My Contributions</span>
+          <p className="body-s text-portfolio-white mt-1.5 leading-relaxed">{contributions}</p>
         </div>
 
-        <div className="flex flex-wrap gap-2 mt-4">
+        <div className="flex flex-wrap items-center gap-2 pt-1">
           {techStack.map((tech, i) => (
             <span
               key={i}
-              className="label-style px-3 py-1 rounded-full bg-portfolio-brown/40 text-portfolio-brown-light"
+              className="mono-style px-3 py-1 rounded-sm border border-portfolio-gray-border text-portfolio-gray-text bg-portfolio-surface-muted"
             >
               {tech}
             </span>
@@ -120,11 +169,12 @@ export function ProductCard({
           href={link}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block mt-5 text-portfolio-green body-s font-medium hover:underline transition-all"
+          className="inline-flex items-center gap-2 body-s font-medium text-portfolio-green hover:underline group/visit w-fit mt-1"
         >
-          Visit {name} &rarr;
+          Visit {name}
+          <ArrowUpRight className="w-3.5 h-3.5 group-hover/visit:translate-x-0.5 group-hover/visit:-translate-y-0.5 transition-transform" />
         </a>
       </div>
-    </div>
+    </article>
   );
 }

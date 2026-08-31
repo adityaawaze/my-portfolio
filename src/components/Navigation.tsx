@@ -3,47 +3,42 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Menu, X } from 'lucide-react';
+import { navLinks } from '@/lib/icons';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { Logo } from '@/components/Logo';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const navLinks = [
-  { label: 'About', href: '#about' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Products', href: '#products' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Research', href: '#research' },
-  { label: 'Contact', href: '#contact' },
-];
 
 export function Navigation() {
   const headerRef = useRef<HTMLElement>(null);
   const [activeSection, setActiveSection] = useState('');
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const lastScrollY = useRef(0);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentY = window.scrollY;
-      if (currentY > 100 && currentY > lastScrollY.current) {
-        setHidden(true);
-      } else {
-        setHidden(false);
-      }
-      lastScrollY.current = currentY;
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileOpen(false);
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, []);
+
   useGSAP(() => {
-    // Track active section
-    const sections = navLinks.map(link => link.href.slice(1));
-    sections.forEach(id => {
+    navLinks.forEach((link) => {
+      const id = link.href.slice(1);
       const el = document.getElementById(id);
       if (!el) return;
-      
       ScrollTrigger.create({
         trigger: el,
         start: 'top center',
@@ -55,92 +50,92 @@ export function Navigation() {
   });
 
   const scrollTo = (href: string) => {
-    const el = document.querySelector(href);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
     setMobileOpen(false);
   };
 
   return (
     <>
-      <header
-        ref={headerRef}
-        className={`fixed top-0 left-0 right-0 z-50 h-16 flex items-center justify-between transition-all duration-300 ${
-          hidden ? '-translate-y-full' : 'translate-y-0'
-        }`}
-        style={{
-          background: 'rgba(0, 0, 0, 0.85)',
-          backdropFilter: 'blur(12px)',
-          borderBottom: '1px solid #333333',
-          paddingLeft: 'clamp(20px, 5vw, 80px)',
-          paddingRight: 'clamp(20px, 5vw, 80px)',
-        }}
-      >
-        {/* Logo */}
-        <div className="flex flex-col">
-          <span className="heading-s text-portfolio-white leading-tight">Aditya Awaze</span>
-          <span className="label-style text-portfolio-green">Software Engineer</span>
-        </div>
+      <header className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-4">
+        <div
+          ref={headerRef as React.RefObject<HTMLDivElement>}
+          className={`w-full max-w-5xl flex items-center justify-between gap-4 px-4 md:px-6 h-14 rounded-2xl transition-all duration-500 ${
+            scrolled
+              ? 'glass-card shadow-glow'
+              : 'bg-transparent border border-transparent'
+          }`}
+        >
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-portfolio-green rounded-lg px-1 py-0.5"
+          >
+            <Logo variant="nav" scrolled={scrolled} />
+          </button>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <button
-              key={link.href}
-              onClick={() => scrollTo(link.href)}
-              className={`nav-style relative transition-colors duration-200 ${
-                activeSection === link.href.slice(1)
-                  ? 'text-portfolio-green'
-                  : 'text-portfolio-white hover:text-portfolio-green'
-              }`}
-            >
-              {link.label}
-              {activeSection === link.href.slice(1) && (
-                <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-portfolio-green" />
-              )}
+          <nav className="hidden lg:flex items-center gap-1">
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.href.slice(1);
+              return (
+                <button
+                  key={link.href}
+                  onClick={() => scrollTo(link.href)}
+                  className={`nav-style relative px-3 py-2 rounded-lg transition-all duration-200 ${
+                    isActive
+                      ? scrolled
+                        ? 'text-portfolio-green bg-portfolio-accent-subtle nav-link-active'
+                        : 'text-hero-fg nav-link-active'
+                      : scrolled
+                        ? 'text-portfolio-gray-text hover:text-portfolio-white hover:bg-portfolio-accent-subtle'
+                        : 'text-hero-fg-subtle hover:text-hero-fg'
+                  }`}
+                >
+                  {link.label}
+                </button>
+              );
+            })}
+          </nav>
+
+          <div className="hidden lg:flex items-center gap-2">
+            <ThemeToggle />
+            <button onClick={() => scrollTo('#contact')} className="btn-primary text-xs px-5 py-2">
+              Hire Me
             </button>
-          ))}
-        </nav>
+          </div>
 
-        {/* CTA Button */}
-        <a
-          href="#contact"
-          onClick={(e) => { e.preventDefault(); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); }}
-          className="hidden md:block label-style px-6 py-2.5 rounded-button bg-portfolio-green text-portfolio-black hover:bg-[#5ac55c] hover:scale-[1.02] transition-all duration-200"
-        >
-          Hire Me
-        </a>
-
-        {/* Mobile Hamburger */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden text-portfolio-white p-2"
-          aria-label="Toggle menu"
-        >
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+          <div className="flex lg:hidden items-center gap-2">
+            <ThemeToggle />
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="p-2 text-hero-fg rounded-lg hover:bg-portfolio-accent-subtle"
+              aria-label="Toggle menu"
+              aria-expanded={mobileOpen}
+            >
+              {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
+          </div>
+        </div>
       </header>
 
-      {/* Mobile Menu Overlay */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-40 bg-black/95 flex flex-col items-center justify-center gap-8 md:hidden">
-          {navLinks.map((link) => (
-            <button
-              key={link.href}
-              onClick={() => scrollTo(link.href)}
-              className="heading-m text-portfolio-white hover:text-portfolio-green transition-colors"
-            >
-              {link.label}
-            </button>
-          ))}
-          <a
-            href="#contact"
-            onClick={(e) => { e.preventDefault(); setMobileOpen(false); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); }}
-            className="label-style px-8 py-3 rounded-button bg-portfolio-green text-portfolio-black mt-4"
-          >
+        <div className="fixed inset-0 z-40 glass-card !rounded-none flex flex-col items-center justify-center gap-4 lg:hidden"
+          role="dialog" aria-modal="true"
+        >
+          {navLinks.map((link) => {
+            const Icon = link.icon;
+            return (
+              <button
+                key={link.href}
+                onClick={() => scrollTo(link.href)}
+                className="heading-m text-portfolio-white hover:text-portfolio-green flex items-center gap-3 px-4 py-2 rounded-xl hover:bg-portfolio-accent-subtle transition-colors"
+              >
+                <Icon className="w-5 h-5" strokeWidth={1.5} />
+                {link.label}
+              </button>
+            );
+          })}
+          <button onClick={() => scrollTo('#contact')} className="btn-primary mt-4">
             Hire Me
-          </a>
+          </button>
         </div>
       )}
     </>

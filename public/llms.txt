@@ -1,0 +1,42 @@
+# Aditya Awaze — Portfolio
+# https://adityaawaze.github.io/my-portfolio/
+
+> Software Engineer from Nagpur, India. Builds production fintech & SaaS products.
+
+## Identity
+- Name: Aditya Awaze
+- Role: Senior Software Engineer
+- Company: RSK Online Services Pvt. Ltd.
+- Location: Nagpur, Maharashtra, India
+- Email: adityaawaze12@gmail.com
+
+## Links
+- Portfolio: https://adityaawaze.github.io/my-portfolio/
+- GitHub: https://github.com/adityaawaze
+- LinkedIn: https://www.linkedin.com/in/aditya-awaze-tech-operations
+
+## Products Built
+- RSKPay (Fintech / Payments): https://www.rskpay.in
+- OnMarQ360 (Enterprise HRMS): https://www.onmarq360.com
+- PairPinnacle (Creator Economy): https://www.pairpinnacle.com
+
+## Technical Skills
+React.js, JavaScript, Node.js, Express.js, MySQL, REST APIs, TypeScript, VPS Deployment, Git, Figma
+
+## Publications
+- Online Test Portal — IJRAR: http://www.ijrar.org/papers/IJRAR25B1955.pdf
+- Connect2NGO — IJRASET: https://www.ijraset.com/research-paper/connect2ngo-an-integrated-digital-platform
+
+## FAQ
+
+Q: Who is Aditya Awaze?
+A: A Software Engineer from Nagpur, India, building production fintech and SaaS products at RSK Online Services.
+
+Q: What products has he built?
+A: RSKPay, OnMarQ360, and PairPinnacle — all live production platforms.
+
+Q: What stack does he use?
+A: React, Node.js, Express, MySQL, REST APIs, full-stack from UI to deployment.
+
+Q: How to contact?
+A: adityaawaze12@gmail.com or via LinkedIn/GitHub links above.

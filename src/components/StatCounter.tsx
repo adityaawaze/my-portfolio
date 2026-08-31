@@ -20,7 +20,7 @@ export function StatCounter({ end, suffix = '', label, delay = 0 }: StatCounterP
     if (!ref.current) return;
 
     const obj = { value: 0 };
-    
+
     gsap.to(obj, {
       value: end,
       duration: 1.5,
@@ -39,11 +39,11 @@ export function StatCounter({ end, suffix = '', label, delay = 0 }: StatCounterP
   }, { scope: ref });
 
   return (
-    <div 
+    <div
       ref={ref}
-      className="bg-portfolio-gray-dark border border-portfolio-gray-border rounded-xl px-6 py-5"
+      className="portfolio-card rounded-xl px-6 py-5 hover:-translate-y-1 hover:border-portfolio-green group"
     >
-      <div className="heading-l text-portfolio-green font-bold">
+      <div className="heading-l text-portfolio-green font-bold transition-transform duration-300 group-hover:scale-105">
         {displayValue}{suffix}
       </div>
       <div className="body-s text-portfolio-gray-text mt-1">{label}</div>

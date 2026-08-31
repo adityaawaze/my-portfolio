@@ -1,4 +1,5 @@
 import { useLenis } from '@/hooks/useLenis';
+import { BackgroundEffects } from '@/components/BackgroundEffects';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 import { HeroSection } from '@/sections/HeroSection';
@@ -8,6 +9,7 @@ import { ProductsSection } from '@/sections/ProductsSection';
 import { SkillsSection } from '@/sections/SkillsSection';
 import { ResearchSection } from '@/sections/ResearchSection';
 import { EducationSection } from '@/sections/EducationSection';
+import { FaqSection } from '@/sections/FaqSection';
 import { ContactSection } from '@/sections/ContactSection';
 import { Toaster } from '@/components/ui/sonner';
 
@@ -15,19 +17,23 @@ function App() {
   useLenis();
 
   return (
-    <div className="relative w-full">
-      <Navigation />
-      <main className="w-full">
-        <HeroSection />
-        <AboutSection />
-        <ExperienceSection />
-        <ProductsSection />
-        <SkillsSection />
-        <ResearchSection />
-        <EducationSection />
-        <ContactSection />
-      </main>
-      <Footer />
+    <div className="relative w-full min-h-screen">
+      <BackgroundEffects />
+      <div className="relative z-10">
+        <Navigation />
+        <main className="w-full">
+          <HeroSection />
+          <AboutSection />
+          <ExperienceSection />
+          <ProductsSection />
+          <SkillsSection />
+          <ResearchSection />
+          <EducationSection />
+          <FaqSection />
+          <ContactSection />
+        </main>
+        <Footer />
+      </div>
       <Toaster />
     </div>
   );
