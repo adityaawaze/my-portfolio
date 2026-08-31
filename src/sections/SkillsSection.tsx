@@ -32,13 +32,13 @@ export function SkillsSection() {
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
-          <Marquee>
+          <Marquee className="mt-2">
             {allSkills.map((skill) => {
               const TechIcon = getTechIcon(skill);
               return (
                 <span
                   key={skill}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full glass-card whitespace-nowrap body-s text-portfolio-white"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card whitespace-nowrap body-s text-portfolio-white"
                 >
                   {TechIcon && <TechIcon className="w-4 h-4 text-portfolio-green" />}
                   {skill}
@@ -48,7 +48,7 @@ export function SkillsSection() {
           </Marquee>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-10 items-stretch">
           {skillCategories.map((category, i) => (
             <CategoryCard key={category.title} {...category} delay={i * 0.08} />
           ))}

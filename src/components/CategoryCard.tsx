@@ -9,6 +9,7 @@ import {
   Cloud,
   Palette,
   Wrench,
+  Circle,
 } from 'lucide-react';
 import { getTechIcon } from '@/lib/tech-icons';
 
@@ -56,29 +57,39 @@ export function CategoryCard({ icon, title, skills, delay = 0 }: CategoryCardPro
   }, { scope: cardRef });
 
   return (
-    <div ref={cardRef}>
-      <div className="portfolio-card rounded-2xl p-7 hover:-translate-y-1 hover:border-portfolio-brown-light group">
-        <IconComponent
-          className="w-8 h-8 text-portfolio-green mb-4 transition-transform duration-300 group-hover:scale-105"
-          strokeWidth={1.5}
-        />
-        <h3 className="heading-m text-portfolio-white mb-4">{title}</h3>
-        <div className="flex flex-wrap gap-2">
-          {skills.map((skill, i) => {
+    <div ref={cardRef} className="h-full">
+      <div className="portfolio-card rounded-2xl p-6 md:p-7 h-full flex flex-col hover:-translate-y-1 hover:border-portfolio-brown-light group transition-transform duration-300">
+        <div className="flex items-center gap-3 mb-5">
+          <div
+            className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+            style={{ background: 'var(--portfolio-accent-subtle)' }}
+          >
+            <IconComponent
+              className="w-5 h-5 text-portfolio-green transition-transform duration-300 group-hover:scale-105"
+              strokeWidth={1.5}
+            />
+          </div>
+          <h3 className="heading-m text-portfolio-white font-display">{title}</h3>
+        </div>
+
+        <ul className="flex flex-col gap-2.5 flex-1">
+          {skills.map((skill) => {
             const TechIcon = getTechIcon(skill);
             return (
-              <span
-                key={i}
-                className="mono-style px-3.5 py-1.5 rounded-md bg-portfolio-green/10 text-portfolio-white transition-all duration-200 hover:bg-portfolio-green/25 hover:-translate-y-0.5 cursor-default flex items-center gap-1.5"
+              <li
+                key={skill}
+                className="flex items-center gap-2.5 body-s text-portfolio-gray-text rounded-lg border border-portfolio-gray-border/60 bg-portfolio-surface-muted/40 px-3 py-2"
               >
                 {TechIcon ? (
-                  <TechIcon className="w-3.5 h-3.5 text-portfolio-green flex-shrink-0" />
-                ) : null}
-                {skill}
-              </span>
+                  <TechIcon className="w-4 h-4 text-portfolio-green flex-shrink-0" />
+                ) : (
+                  <Circle className="w-2 h-2 text-portfolio-green flex-shrink-0 fill-portfolio-green" />
+                )}
+                <span className="text-portfolio-white">{skill}</span>
+              </li>
             );
           })}
-        </div>
+        </ul>
       </div>
     </div>
   );

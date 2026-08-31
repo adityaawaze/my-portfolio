@@ -445,6 +445,20 @@
     scrollbar-width: none;
   }
   .hide-scrollbar::-webkit-scrollbar { display: none; }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .marquee-track {
+    animation: marquee 25s linear infinite;
+    will-change: transform;
+  }
+
+  .marquee-track--slow {
+    animation-duration: 40s;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
